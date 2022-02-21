@@ -1,2 +1,23 @@
 ---
 # tasks file for snmp
+
+- name: install snmpd
+  ansible.builtin.package:
+    name: snmpd
+    state: present
+
+- name: configure snmpd
+  ansible.builtin.lineinfile:
+    dest: /etc/snmp/snmpd.conf
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+    backrefs: yes
+    state: present
+  with_items:
+    - { regexp: '^(sysLocation ).*$', line: '\g<1>{{ snmp_location }}' }
+    - { regexp: '^(sysContact ).*$', line: '\g<1>{{ snmp_contact }}' }
+    - { regexp: '^(agentaddress ).*$', line: '\g<1>{{ snmp_agentaddress }}' }
+    - { regexp: '^(rocommunity )(.*public)(.*)$', line: '\g<1>{{ snmp_rocommunity }}\g<3>' }
+    - { regexp: '^(rocommunity6 )(.*public)(.*)$', line: '\g<1>{{ snmp_rocommunity }}\g<3>' }
+    - { regexp: '^(rouser )(.*authPrivUser).*$', line: '\g<1>{{ snmp_v3user }}" authpriv -V systemonly"' }
+  notify: "Restart snmpd"
