@@ -1,2 +1,8 @@
 ---
 # handlers file for snmp
+
+- name: restart snmpd
+  ansible.builtin.service:
+    name: snmpd.service
+    state: restarted
+  listen: "Restart snmpd"
