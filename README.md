@@ -1,38 +1,80 @@
-Role Name
-=========
+snmp
+====
 
-A brief description of the role goes here.
+This ansible role is to enable snmp on linux systems.
+Please adjust location, contact, community and snmp v3 user/passes as needed.
+In default configuration the snmpd configuration will be modified, not replaced. SNMP requests are possible from any source with snmp v2c and v3; please use a firewall to limit the accesses. 
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role has no special requirements.
+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Here is a list of variables defined in **defaults/main.yml**: 
+
+```
+# reset snmpd.conf to defaults
+snmpd_config_defaults: 'no'
+
+# device location and contact
+snmp_location: 'FRA1, Interxion, Frankfurt am Main, Germany [50.11970, 8.73600]'
+snmp_contact: 'Data Center <datacenter@example.com>'
+
+# snmp agent listen address - IPv4 and IPv6 UDP
+snmp_agentaddress: 'udp:161,udp6:[::1]:161'
+
+# snmp source - accept requests from globally (default) or from network (e.g. 10.0.0.0/8)
+snmp_source: 'default'
+
+# snmp v2c community
+snmp_rocommunity: 'mYsEcrEtComMuniTy01'
+
+# snmp v3 user and passwords
+snmp_v3user: 'snmpv3user'
+snmp_v3authpass: 'SeCrEtAuThPaSs'
+snmp_v3privpass: 'SeCrEtPrIvPaSs'
+
+# check if snmp v2c is working on remote host
+snmpd_check_v2c: 'yes'
+
+# check if snmp v3 is working on remote host
+snmpd_check_v3: 'no'
+```
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role has no dependencies.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This role can be used e.g. with the following playbook:
+```
+---
+- name: enable snmp
+  hosts: linux_server
+  remote_user: root
+  roles:
+    - christian_becker.snmp
+```
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
 
 License
 -------
 
-BSD
+MIT
+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+* **Christian Becker** - [christian-becker](https://github.com/christian-becker)  
+
