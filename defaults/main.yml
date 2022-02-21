@@ -11,6 +11,9 @@ snmp_contact: 'Data Center <datacenter@example.com>'
 # snmp agent listen address - IPv4 and IPv6 UDP
 snmp_agentaddress: 'udp:161,udp6:[::1]:161'
 
+# snmp source - accept requests from globally (default) or from network (e.g. 10.0.0.0/8)
+snmp_source: 'default'
+
 # snmp v2c community
 snmp_rocommunity: 'mYsEcrEtComMuniTy01'
 

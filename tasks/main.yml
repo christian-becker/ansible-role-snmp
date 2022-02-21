@@ -28,7 +28,13 @@
     - { regexp: '^(sysLocation ).*$', line: '\g<1>{{ snmp_location }}' }
     - { regexp: '^(sysContact ).*$', line: '\g<1>{{ snmp_contact }}' }
     - { regexp: '^(agentaddress ).*$', line: '\g<1>{{ snmp_agentaddress }}' }
-    - { regexp: '^(rocommunity )(.*public)(.*)$', line: '\g<1>{{ snmp_rocommunity }}\g<3>' }
-    - { regexp: '^(rocommunity6 )(.*public)(.*)$', line: '\g<1>{{ snmp_rocommunity }}\g<3>' }
-    - { regexp: '^(rouser )(.*authPrivUser).*$', line: '\g<1>{{ snmp_v3user }}" authpriv -V systemonly"' }
+    - { regexp: '^(com2sec.*public)(.*)$', line: '\g<1> {{ snmp_rocommunity }}' }
+    - { regexp: '^(rocommunity )(.*public)(.*)$', line: '\g<1>{{ snmp_rocommunity }} {{ snmp_source }}' }
+    - { regexp: '^(rocommunity)([ ].*? )(.*)$', line: '\g<1> {{ snmp_rocommunity }} {{ snmp_source }}' }
+    - { regexp: '^(rocommunity6 )(.*public)(.*)$', line: '\g<1>{{ snmp_rocommunity }} {{ snmp_source }}' }
+    - { regexp: '^(rocommunity6)([ ].*? )(.*)$', line: '\g<1> {{ snmp_rocommunity }} {{ snmp_source }}' }
+    - { regexp: '^(# createuser .*)$', line: 'createuser {{ snmp_v3user }} SHA-512 {{ snmp_v3authpass }} AES {{ snmp_v3privpass }}' }
+    - { regexp: '^(createuser )(.*{{ snmp_v3user }}).*$', line: 'createuser {{ snmp_v3user }} SHA-512 {{ snmp_v3authpass }} AES {{ snmp_v3privpass }}' }
+    - { regexp: '^(rouser )(.*authPrivUser).*$', line: '\g<1>{{ snmp_v3user }} authpriv' }
+    - { regexp: '^(rouser )(.*{{ snmp_v3user }}).*$', line: '\g<1>{{ snmp_v3user }} authpriv' }
   notify: "Restart snmpd"
