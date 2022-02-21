@@ -2,7 +2,7 @@
 # defaults file for snmp
 
 # reset snmpd.conf to defaults
-snmpd_config_defaults: 'yes'
+snmpd_config_defaults: 'no'
 
 # device location and contact
 snmp_location: 'FRA1, Interxion, Frankfurt am Main, Germany [50.11970, 8.73600]'
@@ -26,4 +26,4 @@ snmp_v3privpass: 'SeCrEtPrIvPaSs'
 snmpd_check_v2c: 'yes'
 
 # check if snmp v3 is working on remote host
-snmpd_check_v3: 'yes'
+snmpd_check_v3: 'no'
