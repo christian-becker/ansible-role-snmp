@@ -1,6 +1,9 @@
 ---
 # defaults file for snmp
 
+# reset snmpd.conf to defaults
+snmpd_config_defaults: 'yes'
+
 # device location and contact
 snmp_location: 'FRA1, Interxion, Frankfurt am Main, Germany [50.11970, 8.73600]'
 snmp_contact: 'Data Center <datacenter@example.com>'

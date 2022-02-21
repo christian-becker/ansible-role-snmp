@@ -6,12 +6,23 @@
     name: snmpd
     state: present
 
+- name: optionally - set snmpd.conf to defaults
+  ansible.builtin.copy:
+    src: snmpd.conf
+    dest: /etc/snmp/snmpd.conf
+    owner: root
+    group: root
+    mode: '0600'
+    backup: yes
+  when: snmpd_config_defaults == 'yes'
+
 - name: configure snmpd
   ansible.builtin.lineinfile:
     dest: /etc/snmp/snmpd.conf
     regexp: '{{ item.regexp }}'
     line: '{{ item.line }}'
     backrefs: yes
+    backup: no
     state: present
   with_items:
     - { regexp: '^(sysLocation ).*$', line: '\g<1>{{ snmp_location }}' }
