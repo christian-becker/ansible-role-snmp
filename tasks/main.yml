@@ -38,3 +38,40 @@
     - { regexp: '^(rouser )(.*authPrivUser).*$', line: '\g<1>{{ snmp_v3user }} authpriv' }
     - { regexp: '^(rouser )(.*{{ snmp_v3user }}).*$', line: '\g<1>{{ snmp_v3user }} authpriv' }
   notify: "Restart snmpd"
+
+# do "snmpwalk -v 2c -c mYsEcrEtComMuniTy01 HOSTIP" the ansible way / pysnmp is needed
+- name: check if snmp v2c is working on remote host
+  community.general.snmp_facts:
+    host: '{{ inventory_hostname }}'
+    version: v2c
+    community: '{{ snmp_rocommunity }}'
+  delegate_to: localhost
+  register: snmpv2cresponse
+  ignore_errors: True
+  when: snmpd_check_v2c == 'yes'
+
+- name: show output of snmp v2c
+  ansible.builtin.debug:
+    msg: "The snmp v2c check respone was: {{ snmpv2cresponse }}"
+  when: snmpd_check_v2c == 'yes'
+
+# do "snmpwalk -v 3 -l authPriv -u snmpv3user -a SHA-512 -A SeCrEtAuThPaSs -x AES -X SeCrEtPrIvPaSs HOSTIP" the ansible way / pysnmp and pycryptodome is needed
+- name: check if snmp v3 is working on remote host
+  community.general.snmp_facts:
+    host: '{{ inventory_hostname }}'
+    version: v3
+    level: authPriv
+    integrity: sha
+    privacy: aes
+    username: '{{ snmp_v3user }}'
+    authkey: '{{ snmp_v3authpass }}'
+    privkey: '{{ snmp_v3privpass }}'
+  delegate_to: localhost
+  register: snmpv3response
+  ignore_errors: True
+  when: snmpd_check_v3 == 'yes'
+
+- name: show output of snmp v3
+  ansible.builtin.debug:
+    msg: "The snmp v3 check reponse was: {{ snmpv3response }}"
+  when: snmpd_check_v3 == 'yes'
