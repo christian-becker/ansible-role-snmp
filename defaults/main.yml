@@ -1,2 +1,17 @@
 ---
 # defaults file for snmp
+
+# device location and contact
+snmp_location: 'FRA1, Interxion, Frankfurt am Main, Germany [50.11970, 8.73600]'
+snmp_contact: 'Data Center <datacenter@example.com>'
+
+# snmp agent listen address - IPv4 and IPv6 UDP
+snmp_agentaddress: 'udp:161,udp6:[::1]:161'
+
+# snmp v2c community
+snmp_rocommunity: 'mYsEcrEtComMuniTy01'
+
+# snmp v3 user and passwords
+snmp_v3user: 'snmpv3user'
+snmp_v3authpass: 'SeCrEtAuThPaSs'
+snmp_v3privpass: 'SeCrEtPrIvPaSs'
